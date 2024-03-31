@@ -1,0 +1,56 @@
+CREATE DATABASE IF NOT EXISTS libraryProject;
+
+USE libraryProject;
+
+-- Tabela przechowująca informacje o książkach
+CREATE TABLE IF NOT EXISTS Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    publication_year INT,
+    isbn VARCHAR(20),
+    genre VARCHAR(100),
+    availability BOOLEAN DEFAULT TRUE
+);
+
+-- Tabela przechowująca informacje o czytelnikach
+CREATE TABLE IF NOT EXISTS Readers (
+    reader_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    email VARCHAR(255),
+    phone_number VARCHAR(20)
+);
+
+-- Tabela łącząca książki z czytelnikami (wypożyczenia)
+CREATE TABLE IF NOT EXISTS Borrowings (
+    borrowing_id INT AUTO_INCREMENT PRIMARY KEY,
+    book_id INT,
+    reader_id INT,
+    date_borrowed DATE,
+    date_returned DATE,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (reader_id) REFERENCES Readers(reader_id)
+);
+
+INSERT INTO Books (title, author, publication_year, isbn, genre, availability)
+VALUES
+('Harry Potter and the Philosopher\'s Stone', 'J.K. Rowling', 1997, '9780747532743', 'Fantasy', TRUE),
+('To Kill a Mockingbird', 'Harper Lee', 1960, '9780061120084', 'Literary Fiction', TRUE),
+('1984', 'George Orwell', 1949, '9780451524935', 'Dystopian Fiction', TRUE),
+('The Great Gatsby', 'F. Scott Fitzgerald', 1925, '9780743273565', 'Classic', TRUE),
+('The Catcher in the Rye', 'J.D. Salinger', 1951, '9780316769488', 'Coming-of-Age Fiction', TRUE);
+
+
+INSERT INTO Readers (name, surname, email, phone_number)
+VALUES
+('John', 'Doe', 'johndoe@example.com', '123-456-7890'),
+('Jane', 'Smith', 'janesmith@example.com', '456-789-0123'),
+('Alice', 'Johnson', 'alicejohnson@example.com', '789-012-3456');
+
+
+INSERT INTO Borrowings (book_id, reader_id, date_borrowed, date_returned)
+VALUES
+(1, 1, '2024-03-01', '2024-03-15'),
+(2, 2, '2024-03-05', NULL),
+(3, 3, '2024-03-10', NULL);
